@@ -7,7 +7,7 @@ import com.android.tools.idea.wizard.template.impl.defaultPackageNameParameter
 import java.io.File
 
 val projectTemplate get() = template {
-    name = "Empty Views Activity II"
+    name = "Clean Architecture Project"
     minApi = MIN_API
     description = "Creates a new empty activity"
 
