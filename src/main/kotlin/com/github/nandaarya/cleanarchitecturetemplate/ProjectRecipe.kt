@@ -6,7 +6,6 @@ import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotlinDependencies
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
-import com.android.tools.idea.wizard.template.impl.activities.common.generateManifest
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.android.tools.idea.wizard.template.impl.activities.emptyActivity.src.emptyActivityJava
 import com.github.nandaarya.cleanarchitecturetemplate.source.*
@@ -27,11 +26,6 @@ fun RecipeExecutor.projectRecipe(
     addAllKotlinDependencies(moduleData, revision = "1.9.10")
     addMaterial3Dependency()
 
-    generateManifest(
-        moduleData, activityClass, packageName, isLauncher, false,
-        generateActivityTitle = false
-    )
-
     if (generateLayout) {
         generateSimpleLayout(moduleData, activityClass, layoutName, containerId = "main")
     }
@@ -46,6 +40,10 @@ fun RecipeExecutor.projectRecipe(
     createDirectory(moduleData.srcDir.resolve("data/remote"))
     createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
     createDirectory(moduleData.srcDir.resolve("ui"))
+
+    val androidManifestPath = moduleData.manifestDir.resolve("AndroidManifest.xml")
+    val androidManifest = androidManifestKt()
+    mergeXml(androidManifest, androidManifestPath)
 
     val myApplicationPath = srcOut.resolve("MyApplication.kt")
     val myApplication = myApplicationKt(packageName)
