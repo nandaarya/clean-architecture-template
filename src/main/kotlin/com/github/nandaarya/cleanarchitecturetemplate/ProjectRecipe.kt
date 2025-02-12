@@ -4,7 +4,6 @@ import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotlinDependencies
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.android.tools.idea.wizard.template.impl.activities.emptyActivity.src.emptyActivityJava
@@ -23,11 +22,10 @@ fun RecipeExecutor.projectRecipe(
     val ktOrJavaExt = projectData.language.extension
 
     applyPlugin("com.google.devtools.ksp", "1.9.10-1.0.13")
-    addAllKotlinDependencies(moduleData, revision = "1.9.10")
     addMaterial3Dependency()
 
     if (generateLayout) {
-        generateSimpleLayout(moduleData, activityClass, layoutName, containerId = "main")
+        generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
     }
 
     createDirectory(moduleData.srcDir.resolve("ui"))
