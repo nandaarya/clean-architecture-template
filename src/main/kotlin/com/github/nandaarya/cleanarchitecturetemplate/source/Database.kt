@@ -14,7 +14,8 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [MyModel::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class DummyDatabase : RoomDatabase() {
 

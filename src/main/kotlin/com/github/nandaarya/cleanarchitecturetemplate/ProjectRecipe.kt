@@ -21,6 +21,7 @@ fun RecipeExecutor.projectRecipe(
     val ktOrJavaExt = projectData.language.extension
 
     applyPlugin("com.google.devtools.ksp", "2.1.0-1.0.29")
+    applyPlugin("com.google.dagger.hilt.android", "2.55")
 
     if (generateLayout) {
         generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")

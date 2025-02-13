@@ -3,7 +3,7 @@ package com.github.nandaarya.cleanarchitecturetemplate.source
 fun libsVersionsToml() = """
     [versions]
     agp = "8.8.0"
-    kotlin = "1.9.24"
+    kotlin = "2.1.0"
     coreKtx = "1.15.0"
     junit = "4.13.2"
     junitVersion = "1.2.1"
@@ -12,6 +12,7 @@ fun libsVersionsToml() = """
     material = "1.12.0"
     activity = "1.10.0"
     androidxRoom = "2.6.1"
+    hilt = "2.55"
 
     [libraries]
     androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,6 +25,8 @@ fun libsVersionsToml() = """
     androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
     androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
     androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
+    hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+    hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 
     [plugins]
     android-application = { id = "com.android.application", version.ref = "agp" }
