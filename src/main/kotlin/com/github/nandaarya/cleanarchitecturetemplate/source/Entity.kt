@@ -5,7 +5,7 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 fun entityKt(
     packageName: String
 ) = """
-package ${escapeKotlinIdentifier(packageName)}.data.database
+package ${escapeKotlinIdentifier(packageName)}.data.local.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -5,7 +5,7 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 fun daoKt(
     packageName: String
 ) = """
-package ${escapeKotlinIdentifier(packageName)}.data.database
+package ${escapeKotlinIdentifier(packageName)}.data.local.database
 
 import androidx.room.Dao
 import androidx.room.Insert

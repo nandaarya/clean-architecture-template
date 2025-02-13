@@ -4,7 +4,6 @@ import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.android.tools.idea.wizard.template.impl.activities.emptyActivity.src.emptyActivityJava
 import com.github.nandaarya.cleanarchitecturetemplate.source.*
@@ -21,8 +20,7 @@ fun RecipeExecutor.projectRecipe(
     val useAndroidX = projectData.androidXSupport
     val ktOrJavaExt = projectData.language.extension
 
-    applyPlugin("com.google.devtools.ksp", "1.9.10-1.0.13")
-    addMaterial3Dependency()
+    applyPlugin("com.google.devtools.ksp", "2.1.0-1.0.29")
 
     if (generateLayout) {
         generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
@@ -39,8 +37,22 @@ fun RecipeExecutor.projectRecipe(
     createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
     createDirectory(moduleData.srcDir.resolve("ui"))
 
+    val buildGradlePath = moduleData.rootDir.resolve("build.gradle.kts")
+    val buildGradle = buildGradleKt(packageName)
+    if (buildGradlePath.exists()) {
+        buildGradlePath.delete()
+    }
+    save(buildGradle, buildGradlePath)
+
+    val libsVersionsPath = moduleData.projectTemplateData.rootDir.resolve("gradle/libs.versions.toml")
+    val libsVersions = libsVersionsToml()
+    if (libsVersionsPath.exists()) {
+        libsVersionsPath.delete()
+    }
+    save(libsVersions, libsVersionsPath)
+
     val androidManifestPath = moduleData.manifestDir.resolve("AndroidManifest.xml")
-    val androidManifest = androidManifestKt()
+    val androidManifest = androidManifestXml()
     mergeXml(androidManifest, androidManifestPath)
 
     val myApplicationPath = srcOut.resolve("MyApplication.kt")
