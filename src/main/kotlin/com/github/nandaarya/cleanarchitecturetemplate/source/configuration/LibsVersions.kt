@@ -1,4 +1,4 @@
-package com.github.nandaarya.cleanarchitecturetemplate.source
+package com.github.nandaarya.cleanarchitecturetemplate.source.configuration
 
 fun libsVersionsToml() = """
     [versions]

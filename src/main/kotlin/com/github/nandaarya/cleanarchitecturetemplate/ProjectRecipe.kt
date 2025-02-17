@@ -7,6 +7,13 @@ import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.android.tools.idea.wizard.template.impl.activities.emptyActivity.src.emptyActivityJava
 import com.github.nandaarya.cleanarchitecturetemplate.source.*
+import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.androidManifestXml
+import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.buildGradleKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.libsVersionsToml
+import com.github.nandaarya.cleanarchitecturetemplate.source.local.*
+import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiConfigKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiServiceKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.remote.registerResponseKt
 
 fun RecipeExecutor.projectRecipe(
     moduleData: ModuleTemplateData,

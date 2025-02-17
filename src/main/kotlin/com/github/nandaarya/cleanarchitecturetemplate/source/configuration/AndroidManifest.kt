@@ -1,4 +1,4 @@
-package com.github.nandaarya.cleanarchitecturetemplate.source
+package com.github.nandaarya.cleanarchitecturetemplate.source.configuration
 
 fun androidManifestXml() = """
     <?xml version="1.0" encoding="utf-8"?>
