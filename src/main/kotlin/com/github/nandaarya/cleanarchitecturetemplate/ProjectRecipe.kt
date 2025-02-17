@@ -72,6 +72,18 @@ fun RecipeExecutor.projectRecipe(
     val database = databaseKt(packageName)
     save(database, databasePath)
 
+    val apiConfigPath = srcOut.resolve("data/remote/retrofit/ApiConfig.kt")
+    val apiConfig = apiConfigKt(packageName)
+    save(apiConfig, apiConfigPath)
+
+    val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
+    val apiService = apiServiceKt(packageName)
+    save(apiService, apiServicePath)
+
+    val registerResponsePath = srcOut.resolve("data/remote/response/RegisterResponse.kt")
+    val registerResponse = registerResponseKt(packageName)
+    save(registerResponse, registerResponsePath)
+
     val simpleActivity = when (projectData.language) {
         Language.Kotlin -> emptyActivityKt(packageName, moduleData.namespace, activityClass, layoutName, generateLayout, useAndroidX)
         Language.Java -> emptyActivityJava(packageName, moduleData.namespace, activityClass, layoutName, generateLayout, useAndroidX)

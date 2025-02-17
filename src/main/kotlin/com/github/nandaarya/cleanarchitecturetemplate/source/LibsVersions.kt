@@ -13,9 +13,12 @@ fun libsVersionsToml() = """
     activity = "1.10.0"
     androidxRoom = "2.6.1"
     hilt = "2.55"
+    okhttp = "4.12.0"
+    retrofit = "2.11.0"
 
     [libraries]
     androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+    converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
     junit = { group = "junit", name = "junit", version.ref = "junit" }
     androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
     androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -27,6 +30,8 @@ fun libsVersionsToml() = """
     androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
     hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
     hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+    okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+    retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
     [plugins]
     android-application = { id = "com.android.application", version.ref = "agp" }
