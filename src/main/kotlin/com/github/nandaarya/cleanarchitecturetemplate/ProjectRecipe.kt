@@ -20,8 +20,7 @@ fun RecipeExecutor.projectRecipe(
     activityClass: String,
     generateLayout: Boolean,
     layoutName: String,
-    isLauncher: Boolean,
-    packageName: PackageName
+    packageName: PackageName,
 ) {
     val (projectData, srcOut) = moduleData
     val useAndroidX = projectData.androidXSupport
