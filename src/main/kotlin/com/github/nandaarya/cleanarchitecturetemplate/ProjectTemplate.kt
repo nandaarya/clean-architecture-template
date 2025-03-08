@@ -1,7 +1,6 @@
 package com.github.nandaarya.cleanarchitecturetemplate
 
 import com.android.tools.idea.wizard.template.*
-import com.android.tools.idea.wizard.template.Constraint.*
 import com.android.tools.idea.wizard.template.impl.activities.common.MIN_API
 import com.android.tools.idea.wizard.template.impl.defaultPackageNameParameter
 import java.io.File
@@ -17,38 +16,34 @@ val projectTemplate
         screens = listOf(WizardUiContext.NewProject, WizardUiContext.NewProjectExtraDetail)
         constraints = listOf(TemplateConstraint.AndroidX, TemplateConstraint.Material3, TemplateConstraint.Kotlin)
 
-//        val generateLayout: BooleanParameter = booleanParameter {
-//            name = "Generate a Layout File"
-//            default = true
-//            help = "If true, a layout file will be generated"
-//        }
-//        lateinit var layoutName: StringParameter
-//        val activityClass: StringParameter = stringParameter {
-//            name = "Activity Name"
-//            constraints = listOf(CLASS, UNIQUE, NONEMPTY)
-//            suggest = {
-//                layoutToActivity(layoutName.value)
-//            }
-//            default = "MainActivity"
-//            help = "The name of the activity class to create"
-//        }
-//        layoutName = stringParameter {
-//            name = "Layout Name"
-//            constraints = listOf(LAYOUT, UNIQUE, NONEMPTY)
-//            suggest = {
-//                activityToLayout(activityClass.value)
-//            }
-//            default = "activity_main"
-//            visible = { generateLayout.value }
-//            help = "The name of the UI layout to create for the activity"
-//        }
+        val useDomainLayer: BooleanParameter = booleanParameter {
+            name = "Domain Layer (Use Case, Entity, etc)"
+            default = true
+            help = "If true, Domain Layer file will be generated"
+        }
+
+        val useRoom: BooleanParameter = booleanParameter {
+            name = "Room"
+            default = true
+            help = "If true, Room file will be generated"
+        }
+
+        val useRetrofit: BooleanParameter = booleanParameter {
+            name = "Retrofit"
+            default = true
+            help = "If true, Retrofit file will be generated"
+        }
+
         val packageName = defaultPackageNameParameter
 
         widgets(
             PackageNameWidget(packageName),
-//            TextFieldWidget(activityClass),
-//            CheckBoxWidget(generateLayout),
-//            TextFieldWidget(layoutName),
+            LabelWidget(""),
+            LabelWidget("Select the features you want to add!"),
+            CheckBoxWidget(useDomainLayer),
+            LabelWidget("(Note: Data Layer and UI Layer are always included.)"),
+            CheckBoxWidget(useRoom),
+            CheckBoxWidget(useRetrofit),
         )
 
         thumb {
@@ -58,9 +53,6 @@ val projectTemplate
         recipe = { data ->
             projectRecipe(
                 data as ModuleTemplateData,
-//                activityClass.value,
-//                generateLayout.value,
-//                layoutName.value,
                 packageName.value,
             )
         }
