@@ -22,16 +22,30 @@ val projectTemplate
             help = "If true, Domain Layer file will be generated"
         }
 
+        val useRemoteDataSource: BooleanParameter = booleanParameter {
+            name = "RemoteDataSource"
+            default = true
+            help = "If true, RemoteDataSource file will be generated"
+        }
+
+        val useLocalDataSource: BooleanParameter = booleanParameter {
+            name = "LocalDataSource"
+            default = true
+            help = "If true, LocalDataSource file will be generated"
+        }
+
         val useRoom: BooleanParameter = booleanParameter {
             name = "Room"
             default = true
             help = "If true, Room file will be generated"
+            enabled = { useLocalDataSource.value }
         }
 
         val useRetrofit: BooleanParameter = booleanParameter {
             name = "Retrofit"
             default = true
             help = "If true, Retrofit file will be generated"
+            enabled = { useRemoteDataSource.value }
         }
 
         val packageName = defaultPackageNameParameter
@@ -42,7 +56,11 @@ val projectTemplate
             LabelWidget("Select the features you want to add!"),
             CheckBoxWidget(useDomainLayer),
             LabelWidget("(Note: Data Layer and UI Layer are always included.)"),
+            LabelWidget(""),
+            CheckBoxWidget(useLocalDataSource),
             CheckBoxWidget(useRoom),
+            LabelWidget(""),
+            CheckBoxWidget(useRemoteDataSource),
             CheckBoxWidget(useRetrofit),
         )
 
