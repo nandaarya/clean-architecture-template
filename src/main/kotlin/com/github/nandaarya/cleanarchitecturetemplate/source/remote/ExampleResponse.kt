@@ -2,16 +2,14 @@ package com.github.nandaarya.cleanarchitecturetemplate.source.remote
 
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
-fun registerResponseKt(
+fun exampleResponseKt(
     packageName: String
 ) = """
     package ${escapeKotlinIdentifier(packageName)}.data.remote.response
 
     import com.google.gson.annotations.SerializedName
 
-    // Example Api Response, related to Api Service
-    // You can delete it, or just change it
-    data class RegisterResponse(
+    data class ExampleResponse(
 
     	@field:SerializedName("error")
     	val error: Boolean? = null,
@@ -19,5 +17,4 @@ fun registerResponseKt(
     	@field:SerializedName("message")
     	val message: String? = null
     )
-
 """.trimIndent()

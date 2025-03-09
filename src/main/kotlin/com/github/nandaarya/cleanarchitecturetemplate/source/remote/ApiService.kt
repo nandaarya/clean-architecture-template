@@ -12,13 +12,12 @@ fun apiServiceKt(
 
     interface ApiService {
     
-        // Example Function, You can delete it if you want
         @FormUrlEncoded
         @POST("register")
         suspend fun register(
             @Field("name") name: String,
             @Field("email") email: String,
             @Field("password") password: String
-        ): RegisterResponse
+        ): ExampleResponse
     }
 """.trimIndent()

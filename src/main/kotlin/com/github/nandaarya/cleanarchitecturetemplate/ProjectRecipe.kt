@@ -7,18 +7,23 @@ import com.android.tools.idea.wizard.template.impl.activities.common.generateSim
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.androidManifestXml
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.buildGradleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.libsVersionsToml
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.entityKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.iRepositoryKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseInteractorKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.emptyActivityKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.local.daoKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.local.databaseKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.local.entityKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.local.modelKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.myApplicationKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiConfigKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiServiceKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.remote.registerResponseKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.remote.exampleResponseKt
 
 fun RecipeExecutor.projectRecipe(
     moduleData: ModuleTemplateData,
     packageName: PackageName,
+    useDomainLayer: Boolean,
 ) {
     val (projectData, srcOut) = moduleData
     val useAndroidX = projectData.androidXSupport
@@ -30,6 +35,29 @@ fun RecipeExecutor.projectRecipe(
     val layoutName = "activity_main"
 
     generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
+
+    if (useDomainLayer) {
+        createDirectory(moduleData.srcDir.resolve("domain"))
+        createDirectory(moduleData.srcDir.resolve("domain/model"))
+        createDirectory(moduleData.srcDir.resolve("domain/repository"))
+        createDirectory(moduleData.srcDir.resolve("domain/usecase"))
+
+        val entityPath = srcOut.resolve("domain/model/ExampleEntity.kt")
+        val entity = entityKt(packageName)
+        save(entity, entityPath)
+
+        val useCasePath = srcOut.resolve("domain/usecase/ExampleUseCase.kt")
+        val useCase = useCaseKt(packageName)
+        save(useCase, useCasePath)
+
+        val useCaseInteractorPath = srcOut.resolve("domain/usecase/ExampleInteractor.kt")
+        val useCaseInteractor = useCaseInteractorKt(packageName)
+        save(useCaseInteractor, useCaseInteractorPath)
+
+        val iRepositoryPath = srcOut.resolve("domain/repository/IExampleRepository.kt")
+        val iRepository = iRepositoryKt(packageName)
+        save(iRepository, iRepositoryPath)
+    }
 
     createDirectory(moduleData.srcDir.resolve("ui"))
     createDirectory(moduleData.srcDir.resolve("data"))
@@ -64,9 +92,9 @@ fun RecipeExecutor.projectRecipe(
     val myApplication = myApplicationKt(packageName)
     save(myApplication, myApplicationPath)
 
-    val entityPath = srcOut.resolve("data/local/database/MyModel.kt")
-    val entity = entityKt(packageName)
-    save(entity, entityPath)
+    val modelPath = srcOut.resolve("data/local/database/MyModel.kt")
+    val model = modelKt(packageName)
+    save(model, modelPath)
 
     val daoPath = srcOut.resolve("data/local/database/Dao.kt")
     val dao = daoKt(packageName)
@@ -84,9 +112,9 @@ fun RecipeExecutor.projectRecipe(
     val apiService = apiServiceKt(packageName)
     save(apiService, apiServicePath)
 
-    val registerResponsePath = srcOut.resolve("data/remote/response/RegisterResponse.kt")
-    val registerResponse = registerResponseKt(packageName)
-    save(registerResponse, registerResponsePath)
+    val exampleResponsePath = srcOut.resolve("data/remote/response/ExampleResponse.kt")
+    val exampleResponse = exampleResponseKt(packageName)
+    save(exampleResponse, exampleResponsePath)
 
     val simpleActivityPath = srcOut.resolve("ui/MainActivity.kt")
     val simpleActivity =

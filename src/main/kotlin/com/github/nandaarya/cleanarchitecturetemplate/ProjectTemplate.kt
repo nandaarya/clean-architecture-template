@@ -72,6 +72,7 @@ val projectTemplate
             projectRecipe(
                 data as ModuleTemplateData,
                 packageName.value,
+                useDomainLayer.value,
             )
         }
     }
