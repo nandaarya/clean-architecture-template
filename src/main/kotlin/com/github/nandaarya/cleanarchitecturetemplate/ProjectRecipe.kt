@@ -11,14 +11,14 @@ import com.github.nandaarya.cleanarchitecturetemplate.source.domain.entityKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.iRepositoryKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseInteractorKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.emptyActivityKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.local.daoKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.local.databaseKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.local.modelKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.ui.emptyActivityKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.daoKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.databaseKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.modelKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.myApplicationKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiConfigKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.remote.apiServiceKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.remote.exampleResponseKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.apiConfigKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.apiServiceKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.exampleResponseKt
 
 fun RecipeExecutor.projectRecipe(
     moduleData: ModuleTemplateData,

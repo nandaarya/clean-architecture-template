@@ -1,4 +1,4 @@
-package com.github.nandaarya.cleanarchitecturetemplate.source.local
+package com.github.nandaarya.cleanarchitecturetemplate.source.data.local
 
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 

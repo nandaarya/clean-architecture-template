@@ -1,4 +1,4 @@
-package com.github.nandaarya.cleanarchitecturetemplate.source.local
+package com.github.nandaarya.cleanarchitecturetemplate.source.data.local
 
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
@@ -16,7 +16,5 @@ data class MyModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
-    
-    // Tambahkan atau ubah Field baru disini
 )
 """

@@ -55,7 +55,7 @@ val projectTemplate
             LabelWidget(""),
             LabelWidget("Select the features you want to add!"),
             CheckBoxWidget(useDomainLayer),
-            LabelWidget("(Note: Data Layer and UI Layer are always included.)"),
+            LabelWidget("(Note: Data Layer and UI Layer are always included)"),
             LabelWidget(""),
             CheckBoxWidget(useLocalDataSource),
             CheckBoxWidget(useRoom),

@@ -1,4 +1,4 @@
-package com.github.nandaarya.cleanarchitecturetemplate.source.local
+package com.github.nandaarya.cleanarchitecturetemplate.source.data.local
 
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
@@ -14,7 +14,5 @@ import androidx.room.Insert
 interface MyModelDao {
     @Insert
     suspend fun insertMyModel(item: MyModel)
-    
-    // Tambahkan metode interaksi dengan database anda disini
 }
 """
