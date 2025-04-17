@@ -17,11 +17,11 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+This plugin provides a project template for Android Studio that follows Clean Architecture principles, including Data, Domain, and Presentation layers. 
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+It helps developers quickly set up a structured project with essential components like Retrofit for networking and Room for local storage. 
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+By using this template, you can focus on building features while maintaining a clean, scalable, and maintainable codebase from the start.
 <!-- Plugin description end -->
 
 ## Installation

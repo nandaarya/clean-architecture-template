@@ -11,7 +11,7 @@ fun repositoryKt(
     
     class Repository(
         private val apiService: ApiService,
-    
+        private val myModelDao: MyModelDao
         ) {
         suspend fun register(name: String, email: String, password: String): ExampleResponse {
             return apiService.register(name, email, password)
