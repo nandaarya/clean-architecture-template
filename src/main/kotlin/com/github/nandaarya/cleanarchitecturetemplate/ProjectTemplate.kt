@@ -9,7 +9,7 @@ val projectTemplate
     get() = template {
         name = "Clean Architecture Project"
         minApi = MIN_API
-        description = "Creates a new project template with clean architecture"
+        description = "Creates a new project template with clean architecture. It will always use Kotlin as the programming language and Kotlin DSL for build configuration language."
 
         category = Category.Application
         formFactor = FormFactor.Mobile
@@ -61,7 +61,7 @@ val projectTemplate
             CheckBoxWidget(useRoom),
             LabelWidget(""),
             CheckBoxWidget(useRemoteDataSource),
-            CheckBoxWidget(useRetrofit),
+            CheckBoxWidget(useRetrofit)
         )
 
         thumb {
