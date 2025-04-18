@@ -4,9 +4,7 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
-import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.androidManifestXml
-import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.buildGradleKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.libsVersionsToml
+import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.*
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.entityKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.iRepositoryKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseInteractorKt
@@ -27,9 +25,6 @@ fun RecipeExecutor.projectRecipe(
 ) {
     val (projectData, srcOut) = moduleData
     val useAndroidX = projectData.androidXSupport
-
-    applyPlugin("com.google.devtools.ksp", "2.1.0-1.0.29")
-    applyPlugin("com.google.dagger.hilt.android", "2.55")
 
     val activityClass = "MainActivity"
     val layoutName = "activity_main"
@@ -70,12 +65,28 @@ fun RecipeExecutor.projectRecipe(
     createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
     createDirectory(moduleData.srcDir.resolve("ui"))
 
-    val buildGradlePath = moduleData.rootDir.resolve("build.gradle.kts")
-    val buildGradle = buildGradleKt(packageName)
-    if (buildGradlePath.exists()) {
-        buildGradlePath.delete()
+    val buildGradleModulePath = moduleData.rootDir.resolve("build.gradle.kts")
+    val buildGradleModuleGroovyPath = moduleData.rootDir.resolve("build.gradle")
+    val buildGradleProjectPath = moduleData.projectTemplateData.rootDir.resolve("build.gradle.kts")
+    val buildGradleProjectGroovyPath = moduleData.projectTemplateData.rootDir.resolve("build.gradle")
+    val settingsGradlePath = moduleData.projectTemplateData.rootDir.resolve("settings.gradle.kts")
+    val settingsGradleGroovyPath = moduleData.projectTemplateData.rootDir.resolve("settings.gradle")
+    val buildGradleModule = buildGradleModuleKt(packageName)
+    val buildGradleProject = buildGradleProjectKt()
+    val settingsGradle = settingsGradleKt(moduleData.namespace.substringAfterLast("."))
+    if (buildGradleModulePath.exists()) {
+        buildGradleModulePath.delete()
+        buildGradleProjectPath.delete()
+        settingsGradlePath.delete()
     }
-    save(buildGradle, buildGradlePath)
+    if (buildGradleModuleGroovyPath.exists()) {
+        buildGradleModuleGroovyPath.delete()
+        buildGradleProjectGroovyPath.delete()
+        settingsGradleGroovyPath.delete()
+    }
+    save(buildGradleModule, buildGradleModulePath)
+    save(buildGradleProject, buildGradleProjectPath)
+    save(settingsGradle, settingsGradlePath)
 
     val libsVersionsPath = moduleData.projectTemplateData.rootDir.resolve("gradle/libs.versions.toml")
     val libsVersions = libsVersionsToml()

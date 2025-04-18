@@ -2,7 +2,7 @@ package com.github.nandaarya.cleanarchitecturetemplate.source.configuration
 
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
-fun buildGradleKt(
+fun buildGradleModuleKt(
     packageName: String
 ) = """
 plugins {
