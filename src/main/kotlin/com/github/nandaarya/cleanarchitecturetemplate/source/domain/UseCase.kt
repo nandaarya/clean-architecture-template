@@ -7,13 +7,11 @@ fun useCaseKt(
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.domain.usecase
 
-import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleEntity
-import kotlinx.coroutines.flow.Flow
+import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
+import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
 
-interface ExampleUseCase {
-    suspend fun getAllExamples(): Flow<List<ExampleEntity>>
-    suspend fun getExampleById(id: Int): Flow<ExampleEntity>
-    suspend fun addExample(example: ExampleEntity)
-    suspend fun deleteExample(example: ExampleEntity)
+interface ExampleUseCase{
+    suspend fun insertMyModel(item: MyModelEntity)
+    suspend fun registerUser(name: String, email: String, password: String): ExampleResponseEntity
 }
 """.trimIndent()

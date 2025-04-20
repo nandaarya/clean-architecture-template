@@ -14,9 +14,18 @@ import androidx.activity.enableEdgeToEdge
 import ${getMaterialComponentName("android.support.v7.app.AppCompatActivity", useAndroidX)}
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import ${escapeKotlinIdentifier(namespace)}.R
+import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class $activityClass : AppCompatActivity() {
+
+    private val mainViewModel: MainViewModel by viewModels()
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ${renderIf(generateLayout) {
@@ -29,6 +38,19 @@ class $activityClass : AppCompatActivity() {
         }
         """
 }}
+        
+        lifecycleScope.launch {
+            mainViewModel.myModelsEntity.collect { models ->
+                // You could update a UI component with this data
+            }
+        }
+
+        mainViewModel.insertMyModel(MyModelEntity(1))
+
+        lifecycleScope.launch {
+            val response = mainViewModel.registerUser("John", "john@example.com", "password")
+            // You could display a success or error message depending on the response
+        }
     }
 }
 """.trimIndent()

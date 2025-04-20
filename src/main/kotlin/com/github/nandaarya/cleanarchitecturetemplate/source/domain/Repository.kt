@@ -7,13 +7,11 @@ fun iRepositoryKt(
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.domain.repository
 
-import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleEntity
-import kotlinx.coroutines.flow.Flow
+import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
+import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
 
 interface IExampleRepository {
-    suspend fun getAllExamples(): Flow<List<ExampleEntity>>
-    suspend fun getExampleById(id: Int): Flow<ExampleEntity>
-    suspend fun addExample(example: ExampleEntity)
-    suspend fun deleteExample(example: ExampleEntity)
+    suspend fun insertMyModel(item: MyModelEntity)
+    suspend fun register(name: String, email: String, password: String): ExampleResponseEntity
 }
 """.trimIndent()

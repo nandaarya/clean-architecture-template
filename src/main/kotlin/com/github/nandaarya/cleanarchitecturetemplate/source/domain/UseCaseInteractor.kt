@@ -7,14 +7,21 @@ fun useCaseInteractorKt(
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.domain.usecase
 
-import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleEntity
 import ${escapeKotlinIdentifier(packageName)}.domain.repository.IExampleRepository
-import kotlinx.coroutines.flow.Flow
+import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
+import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
+import javax.inject.Inject
 
-class ExampleInteractor(private val repository: IExampleRepository) : ExampleUseCase {
-    override suspend fun getAllExamples(): Flow<List<ExampleEntity>> = repository.getAllExamples()
-    override suspend fun getExampleById(id: Int): Flow<ExampleEntity> = repository.getExampleById(id)
-    override suspend fun addExample(example: ExampleEntity) = repository.addExample(example)
-    override suspend fun deleteExample(example: ExampleEntity) = repository.deleteExample(example)
+class ExampleInteractor @Inject constructor(
+    private val repository: IExampleRepository
+) : ExampleUseCase {
+
+    override suspend fun insertMyModel(item: MyModelEntity) {
+        repository.insertMyModel(item)
+    }
+
+    override suspend fun registerUser(name: String, email: String, password: String): ExampleResponseEntity {
+        return repository.register(name, email, password)
+    }
 }
 """.trimIndent()

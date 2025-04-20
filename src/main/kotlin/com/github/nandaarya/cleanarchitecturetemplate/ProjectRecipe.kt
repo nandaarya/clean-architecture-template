@@ -7,21 +7,19 @@ import com.android.tools.idea.wizard.template.impl.activities.common.generateSim
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.*
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.retrofitModuleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.roomModuleKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.domain.entityKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.domain.iRepositoryKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseInteractorKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.domain.useCaseKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.ui.emptyActivityKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.daoKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.databaseKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.localDataSourceKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.local.modelKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.myApplicationKt
-import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.apiConfigKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.apiServiceKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.exampleResponseKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.remoteDataSourceKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.repositoryKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.*
+import com.github.nandaarya.cleanarchitecturetemplate.source.domain.di.useCaseModuleKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.ui.mainViewModelKt
 
 fun RecipeExecutor.projectRecipe(
     moduleData: ModuleTemplateData,
@@ -45,10 +43,19 @@ fun RecipeExecutor.projectRecipe(
         createDirectory(moduleData.srcDir.resolve("domain/model"))
         createDirectory(moduleData.srcDir.resolve("domain/repository"))
         createDirectory(moduleData.srcDir.resolve("domain/usecase"))
+        createDirectory(moduleData.srcDir.resolve("domain/di"))
 
-        val entityPath = srcOut.resolve("domain/model/ExampleEntity.kt")
-        val entity = entityKt(packageName)
-        save(entity, entityPath)
+        val myModelEntityPath = srcOut.resolve("domain/model/MyModelEntity.kt")
+        val myModelEntity = myModelEntityKt(packageName)
+        save(myModelEntity, myModelEntityPath)
+
+        val exampleResponseEntityPath = srcOut.resolve("domain/model/ExampleResponseEntity.kt")
+        val exampleResponseEntity = exampleResponseEntityKt(packageName)
+        save(exampleResponseEntity, exampleResponseEntityPath)
+
+        val useCaseModulePath = srcOut.resolve("domain/di/UseCaseModule.kt")
+        val useCaseModule = useCaseModuleKt(packageName)
+        save(useCaseModule, useCaseModulePath)
 
         val useCasePath = srcOut.resolve("domain/usecase/ExampleUseCase.kt")
         val useCase = useCaseKt(packageName)
@@ -144,10 +151,6 @@ fun RecipeExecutor.projectRecipe(
     val database = databaseKt(packageName)
     save(database, databasePath)
 
-    // val apiConfigPath = srcOut.resolve("data/remote/retrofit/ApiConfig.kt")
-    // val apiConfig = apiConfigKt(packageName)
-    // save(apiConfig, apiConfigPath)
-
     val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
     val apiService = apiServiceKt(packageName)
     save(apiService, apiServicePath)
@@ -156,9 +159,13 @@ fun RecipeExecutor.projectRecipe(
     val exampleResponse = exampleResponseKt(packageName)
     save(exampleResponse, exampleResponsePath)
 
-    val simpleActivityPath = srcOut.resolve("ui/MainActivity.kt")
-    val simpleActivity =
+    val mainViewModelPath = srcOut.resolve("ui/MainViewModel.kt")
+    val mainViewModel = mainViewModelKt(packageName)
+    save(mainViewModel, mainViewModelPath)
+
+    val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
+    val mainActivity =
         emptyActivityKt(packageName, moduleData.namespace, activityClass, layoutName, true, useAndroidX)
-    save(simpleActivity, simpleActivityPath)
-    open(simpleActivityPath)
+    save(mainActivity, mainActivityPath)
+    open(mainActivityPath)
 }

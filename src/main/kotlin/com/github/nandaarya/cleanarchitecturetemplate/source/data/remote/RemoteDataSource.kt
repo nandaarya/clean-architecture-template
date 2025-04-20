@@ -8,15 +8,19 @@ fun remoteDataSourceKt(
 package ${escapeKotlinIdentifier(packageName)}.data.remote
 
 import ${escapeKotlinIdentifier(packageName)}.data.remote.retrofit.ApiService
-import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse
+import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun register(name: String, email: String, password: String): ExampleResponse {
-        return apiService.register(name, email, password)
+    suspend fun register(name: String, email: String, password: String): ExampleResponseEntity {
+        val response = apiService.register(name, email, password)
+        return ExampleResponseEntity(
+            error = response.error,
+            message = response.message
+        )
     }
 }
 """.trimIndent()

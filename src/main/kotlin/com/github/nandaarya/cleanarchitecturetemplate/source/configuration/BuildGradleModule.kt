@@ -68,5 +68,8 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    
+    // View Model
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
 }
 """.trimIndent()
