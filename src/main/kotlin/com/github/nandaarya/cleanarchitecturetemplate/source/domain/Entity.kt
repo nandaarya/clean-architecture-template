@@ -11,4 +11,4 @@ data class ExampleEntity(
     val id: Int,
     val name: String
 )
-"""
+""".trimIndent()

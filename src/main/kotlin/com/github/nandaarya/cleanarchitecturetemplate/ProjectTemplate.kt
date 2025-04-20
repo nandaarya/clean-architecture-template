@@ -73,6 +73,10 @@ val projectTemplate
                 data as ModuleTemplateData,
                 packageName.value,
                 useDomainLayer.value,
+                useLocalDataSource.value,
+                useRemoteDataSource.value,
+                useRoom.value,
+                useRetrofit.value
             )
         }
     }

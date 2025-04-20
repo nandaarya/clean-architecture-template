@@ -5,7 +5,7 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 fun modelKt(
     packageName: String
 ) = """
-package ${escapeKotlinIdentifier(packageName)}.data.local.database
+package ${escapeKotlinIdentifier(packageName)}.data.local.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -17,4 +17,4 @@ data class MyModel(
     @ColumnInfo(name = "id")
     val id: Int = 0,
 )
-"""
+""".trimIndent()

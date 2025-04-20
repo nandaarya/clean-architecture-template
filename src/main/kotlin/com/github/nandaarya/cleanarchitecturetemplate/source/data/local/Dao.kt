@@ -5,7 +5,7 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 fun daoKt(
     packageName: String
 ) = """
-package ${escapeKotlinIdentifier(packageName)}.data.local.database
+package ${escapeKotlinIdentifier(packageName)}.data.local.room
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -15,4 +15,4 @@ interface MyModelDao {
     @Insert
     suspend fun insertMyModel(item: MyModel)
 }
-"""
+""".trimIndent()

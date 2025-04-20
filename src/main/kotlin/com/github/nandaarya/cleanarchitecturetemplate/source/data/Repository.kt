@@ -4,17 +4,26 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun repositoryKt(
     packageName: String
-) = """
-    package ${escapeKotlinIdentifier(packageName)}.data
-    
-    import ${escapeKotlinIdentifier(packageName)}.data.remote.retrofit.ApiService
-    
-    class Repository(
-        private val apiService: ApiService,
-        private val myModelDao: MyModelDao
-        ) {
-        suspend fun register(name: String, email: String, password: String): ExampleResponse {
-            return apiService.register(name, email, password)
-        }
+) = """ 
+package ${escapeKotlinIdentifier(packageName)}.data
+
+import ${escapeKotlinIdentifier(packageName)}.data.local.LocalDataSource
+import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel
+import ${escapeKotlinIdentifier(packageName)}.data.remote.RemoteDataSource
+import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse
+import javax.inject.Inject
+
+class Repository @Inject constructor(
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource
+) {
+
+    suspend fun insertMyModel(item: MyModel) {
+        localDataSource.insertMyModel(item)
     }
+
+    suspend fun register(name: String, email: String, password: String): ExampleResponse {
+        return remoteDataSource.register(name, email, password)
+    }
+}
 """.trimIndent()

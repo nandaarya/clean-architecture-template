@@ -17,4 +17,4 @@ class ExampleInteractor(private val repository: IExampleRepository) : ExampleUse
     override suspend fun addExample(example: ExampleEntity) = repository.addExample(example)
     override suspend fun deleteExample(example: ExampleEntity) = repository.deleteExample(example)
 }
-"""
+""".trimIndent()

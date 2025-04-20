@@ -16,4 +16,4 @@ interface ExampleUseCase {
     suspend fun addExample(example: ExampleEntity)
     suspend fun deleteExample(example: ExampleEntity)
 }
-"""
+""".trimIndent()

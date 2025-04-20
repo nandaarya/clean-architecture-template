@@ -31,4 +31,4 @@ class $activityClass : AppCompatActivity() {
 }}
     }
 }
-"""
+""".trimIndent()

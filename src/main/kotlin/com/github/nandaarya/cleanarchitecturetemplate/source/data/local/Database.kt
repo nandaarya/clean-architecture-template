@@ -5,11 +5,9 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 fun databaseKt(
     packageName: String
 ) = """
-package ${escapeKotlinIdentifier(packageName)}.data.local.database
+package ${escapeKotlinIdentifier(packageName)}.data.local.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
@@ -18,23 +16,6 @@ import androidx.room.RoomDatabase
     exportSchema = false
 )
 abstract class DummyDatabase : RoomDatabase() {
-
     abstract fun myModelDao(): MyModelDao
-
-    companion object {
-        @Volatile
-        private var instance: DummyDatabase? = null
-
-        fun getInstance(context: Context): DummyDatabase {
-            return synchronized(this) {
-                instance ?: Room.databaseBuilder(
-                    context,
-                    DummyDatabase::class.java,
-                    "local_database.db"
-                )
-                    .build()
-            }
-        }
-    }
 }
-"""
+""".trimIndent()
