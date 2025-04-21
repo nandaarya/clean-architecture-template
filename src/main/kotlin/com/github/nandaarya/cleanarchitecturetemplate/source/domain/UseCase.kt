@@ -12,6 +12,6 @@ import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
 
 interface ExampleUseCase{
     suspend fun insertMyModel(item: MyModelEntity)
-    suspend fun registerUser(name: String, email: String, password: String): ExampleResponseEntity
+    suspend fun register(name: String, email: String, password: String): ExampleResponseEntity
 }
 """.trimIndent()

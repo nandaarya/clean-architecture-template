@@ -20,7 +20,7 @@ class ExampleInteractor @Inject constructor(
         repository.insertMyModel(item)
     }
 
-    override suspend fun registerUser(name: String, email: String, password: String): ExampleResponseEntity {
+    override suspend fun register(name: String, email: String, password: String): ExampleResponseEntity {
         return repository.register(name, email, password)
     }
 }
