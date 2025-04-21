@@ -132,7 +132,7 @@ fun RecipeExecutor.projectRecipe(
     save(localDataSource, localDataSourcePath)
 
     val remoteDataSourcePath = srcOut.resolve("data/remote/RemoteDataSource.kt")
-    val remoteDataSource = remoteDataSourceKt(packageName)
+    val remoteDataSource = remoteDataSourceKt(packageName, useDomainLayer)
     save(remoteDataSource, remoteDataSourcePath)
 
     val repositoryPath = srcOut.resolve("data/Repository.kt")
