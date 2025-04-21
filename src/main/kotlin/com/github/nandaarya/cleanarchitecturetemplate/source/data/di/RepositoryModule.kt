@@ -3,7 +3,9 @@ package com.github.nandaarya.cleanarchitecturetemplate.source.data.di
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun repositoryModuleKt(
-    packageName: String
+    packageName: String,
+    useRoom: Boolean,
+    useRetrofit: Boolean
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.data.di
 
@@ -14,7 +16,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module(includes = [RetrofitModule::class, RoomModule::class])
+@Module(includes = ${when {
+    useRetrofit && useRoom -> "[RetrofitModule::class, RoomModule::class])"
+    useRetrofit -> "[RetrofitModule::class])"
+    useRoom -> "[RoomModule::class])"
+    else -> "[])"
+}}
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
