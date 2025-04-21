@@ -5,6 +5,7 @@ import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.*
+import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.repositoryModuleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.retrofitModuleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.roomModuleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.ui.emptyActivityKt
@@ -68,6 +69,10 @@ fun RecipeExecutor.projectRecipe(
         val iRepositoryPath = srcOut.resolve("domain/repository/IExampleRepository.kt")
         val iRepository = iRepositoryKt(packageName)
         save(iRepository, iRepositoryPath)
+
+        val repositoryModulePath = srcOut.resolve("data/di/RepositoryModule.kt")
+        val repositoryModule = repositoryModuleKt(packageName)
+        save(repositoryModule, repositoryModulePath)
     }
 
     createDirectory(moduleData.srcDir.resolve("ui"))
