@@ -48,7 +48,7 @@ class $activityClass : AppCompatActivity() {
         mainViewModel.insertMyModel(MyModelEntity(1))
 
         lifecycleScope.launch {
-            val response = mainViewModel.registerUser("John", "john@example.com", "password")
+            val response = mainViewModel.register("John", "john@example.com", "password")
             // You could display a success or error message depending on the response
         }
     }

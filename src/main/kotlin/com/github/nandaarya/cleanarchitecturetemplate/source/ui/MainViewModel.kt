@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
  """private val _myModelsEntity = MutableStateFlow<List<MyModelEntity>>(emptyList())
     val myModelsEntity: StateFlow<List<MyModelEntity>> get() = _myModelsEntity
 
-    suspend fun registerUser(name: String, email: String, password: String): ExampleResponseEntity {
+    suspend fun register(name: String, email: String, password: String): ExampleResponseEntity {
         return exampleUseCase.register(name, email, password)
     }
 
@@ -47,7 +47,7 @@ else
  """private val _myModelsEntity = MutableStateFlow<List<MyModel>>(emptyList())
     val myModelsEntity: StateFlow<List<MyModel>> get() = _myModelsEntity
 
-    suspend fun registerUser(name: String, email: String, password: String): ExampleResponse {
+    suspend fun register(name: String, email: String, password: String): ExampleResponse {
         return repository.register(name, email, password)
     }
 
