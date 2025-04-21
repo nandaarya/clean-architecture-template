@@ -128,7 +128,7 @@ fun RecipeExecutor.projectRecipe(
     save(roomModule, roomModulePath)
 
     val localDataSourcePath = srcOut.resolve("data/local/LocalDataSource.kt")
-    val localDataSource = localDataSourceKt(packageName)
+    val localDataSource = localDataSourceKt(packageName, useDomainLayer)
     save(localDataSource, localDataSourcePath)
 
     val remoteDataSourcePath = srcOut.resolve("data/remote/RemoteDataSource.kt")
