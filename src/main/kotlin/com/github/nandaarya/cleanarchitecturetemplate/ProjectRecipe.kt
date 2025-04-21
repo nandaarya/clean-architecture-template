@@ -136,7 +136,7 @@ fun RecipeExecutor.projectRecipe(
     save(remoteDataSource, remoteDataSourcePath)
 
     val repositoryPath = srcOut.resolve("data/Repository.kt")
-    val repository = repositoryKt(packageName)
+    val repository = repositoryKt(packageName, useDomainLayer)
     save(repository, repositoryPath)
 
     val modelPath = srcOut.resolve("data/local/room/MyModel.kt")
