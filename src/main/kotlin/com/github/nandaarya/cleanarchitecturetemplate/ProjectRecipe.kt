@@ -160,7 +160,7 @@ fun RecipeExecutor.projectRecipe(
     save(exampleResponse, exampleResponsePath)
 
     val mainViewModelPath = srcOut.resolve("ui/MainViewModel.kt")
-    val mainViewModel = mainViewModelKt(packageName)
+    val mainViewModel = mainViewModelKt(packageName, useDomainLayer)
     save(mainViewModel, mainViewModelPath)
 
     val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
