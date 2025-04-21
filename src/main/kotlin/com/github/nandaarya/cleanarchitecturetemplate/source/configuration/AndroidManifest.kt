@@ -6,6 +6,7 @@ fun androidManifestXml() = """
         xmlns:tools="http://schemas.android.com/tools">
 
         <application
+            android:name=".MyApplication"
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
