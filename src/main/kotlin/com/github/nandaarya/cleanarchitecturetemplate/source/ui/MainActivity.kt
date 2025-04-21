@@ -5,7 +5,13 @@ import com.android.tools.idea.wizard.template.getMaterialComponentName
 import com.android.tools.idea.wizard.template.renderIf
 
 fun emptyActivityKt(
-    packageName: String, namespace: String, activityClass: String, layoutName: String, generateLayout: Boolean, useAndroidX: Boolean
+    packageName: String,
+    namespace: String,
+    activityClass: String,
+    layoutName: String,
+    generateLayout: Boolean,
+    useAndroidX: Boolean,
+    useDomainLayer: Boolean
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.ui
 
@@ -18,7 +24,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import ${escapeKotlinIdentifier(namespace)}.R
-import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
+${if (useDomainLayer) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" 
+else "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel"}
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,8 +35,9 @@ class $activityClass : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ${renderIf(generateLayout) {
-    """enableEdgeToEdge()
+        ${
+    renderIf(generateLayout) {
+        """enableEdgeToEdge()
         setContentView(R.layout.$layoutName)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -37,15 +45,16 @@ class $activityClass : AppCompatActivity() {
             insets
         }
         """
-}}
+    }
+}
         
         lifecycleScope.launch {
-            mainViewModel.myModelsEntity.collect { models ->
+            mainViewModel.${if (useDomainLayer) "myModelsEntity" else "myModels"}.collect { models ->
                 // You could update a UI component with this data
             }
         }
 
-        mainViewModel.insertMyModel(MyModelEntity(1))
+        mainViewModel.insertMyModel(${if (useDomainLayer) "MyModelEntity(1)" else "MyModel(1)"})
 
         lifecycleScope.launch {
             val response = mainViewModel.register("John", "john@example.com", "password")

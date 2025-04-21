@@ -165,7 +165,7 @@ fun RecipeExecutor.projectRecipe(
 
     val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
     val mainActivity =
-        emptyActivityKt(packageName, moduleData.namespace, activityClass, layoutName, true, useAndroidX)
+        emptyActivityKt(packageName, moduleData.namespace, activityClass, layoutName, true, useAndroidX, useDomainLayer)
     save(mainActivity, mainActivityPath)
     open(mainActivityPath)
 }
