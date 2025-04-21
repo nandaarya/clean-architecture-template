@@ -4,42 +4,57 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun repositoryKt(
     packageName: String,
-    useDomainLayer: Boolean
+    useDomainLayer: Boolean,
+    useLocalDataSource: Boolean,
+    useRemoteDataSource: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
 ) = """ 
 package ${escapeKotlinIdentifier(packageName)}.data
 
-import ${escapeKotlinIdentifier(packageName)}.data.local.LocalDataSource
-import ${escapeKotlinIdentifier(packageName)}.data.remote.RemoteDataSource
+${when {
+    useLocalDataSource && useRemoteDataSource -> """
+        import ${escapeKotlinIdentifier(packageName)}.data.local.LocalDataSource
+        import ${escapeKotlinIdentifier(packageName)}.data.remote.RemoteDataSource
+    """.trimIndent()
+    useLocalDataSource -> "import ${escapeKotlinIdentifier(packageName)}.data.local.LocalDataSource"
+    useRemoteDataSource -> "import ${escapeKotlinIdentifier(packageName)}.data.remote.RemoteDataSource"
+    else -> ""
+}}
 ${if (useDomainLayer) """
-    import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
-    import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
+    ${if (useRetrofit) "import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity" else ""}
+    ${if (useRoom) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" else ""}
     import ${escapeKotlinIdentifier(packageName)}.domain.repository.IExampleRepository
 """.trimIndent() else """
-    import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse
-    import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel
+    ${if (useRetrofit) "import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse" else ""}
+    ${if (useRoom) "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel" else ""}
 """.trimIndent()}
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    ${when {
+    useLocalDataSource && useRemoteDataSource -> """
+        private val localDataSource: LocalDataSource,
+        private val remoteDataSource: RemoteDataSource
+    """.trimIndent()
+    useLocalDataSource -> "private val localDataSource: LocalDataSource"
+    useRemoteDataSource -> "private val remoteDataSource: RemoteDataSource"
+    else -> ""
+}}
 )${if (useDomainLayer) ": IExampleRepository " else " "}{
 
-    ${if (useDomainLayer) 
- """override suspend fun insertMyModel(item: MyModelEntity) {
+    ${if (useLocalDataSource) 
+ """${if (useDomainLayer) "override" else ""} 
+    suspend fun insertMyModel(item: ${if (useDomainLayer) "MyModelEntity" else "MyModel"}) {
         localDataSource.insertMyModel(item)
     }
-
-    override suspend fun register(name: String, email: String, password: String): ExampleResponseEntity {
+    """ else ""}
+    
+    ${if (useRemoteDataSource) 
+ """${if (useDomainLayer) "override" else ""} 
+    suspend fun register(name: String, email: String, password: String): ${if (useDomainLayer) "ExampleResponseEntity" else "ExampleResponse"} {
         return remoteDataSource.register(name, email, password)
-    }"""
-else 
- """suspend fun insertMyModel(item: MyModel) {
-        localDataSource.insertMyModel(item)
     }
-
-    suspend fun register(name: String, email: String, password: String): ExampleResponse {
-        return remoteDataSource.register(name, email, password)
-    }"""}
+    """ else ""}
 }
 """.trimIndent()

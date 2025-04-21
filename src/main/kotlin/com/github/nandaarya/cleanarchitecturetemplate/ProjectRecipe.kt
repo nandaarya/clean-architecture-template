@@ -160,7 +160,13 @@ fun RecipeExecutor.projectRecipe(
     save(remoteDataSource, remoteDataSourcePath)
 
     val repositoryPath = srcOut.resolve("data/Repository.kt")
-    val repository = repositoryKt(packageName, useDomainLayer)
+    val repository = repositoryKt(
+        packageName,
+        useDomainLayer,
+        useLocalDataSource,
+        useRemoteDataSource,
+        useRoom && useLocalDataSource,
+        useRetrofit && useRemoteDataSource)
     save(repository, repositoryPath)
 
     val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
