@@ -3,7 +3,9 @@ package com.github.nandaarya.cleanarchitecturetemplate.source.configuration
 import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun buildGradleModuleKt(
-    packageName: String
+    packageName: String,
+    useRoom: Boolean,
+    useRetrofit: Boolean
 ) = """
 plugins {
     alias(libs.plugins.android.application)
@@ -55,21 +57,24 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     
-    // room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-    
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    
+        
     // View Model
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    
+    ${if (useRoom) 
+ """// room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)""" 
+    else ""}
+    
+    ${if (useRetrofit) 
+ """// Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)""" 
+    else ""}
 }
 """.trimIndent()

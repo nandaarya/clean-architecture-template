@@ -108,7 +108,11 @@ fun RecipeExecutor.projectRecipe(
     val buildGradleProjectGroovyPath = moduleData.projectTemplateData.rootDir.resolve("build.gradle")
     val settingsGradlePath = moduleData.projectTemplateData.rootDir.resolve("settings.gradle.kts")
     val settingsGradleGroovyPath = moduleData.projectTemplateData.rootDir.resolve("settings.gradle")
-    val buildGradleModule = buildGradleModuleKt(packageName)
+    val buildGradleModule = buildGradleModuleKt(
+        packageName,
+        useRoom && useLocalDataSource,
+        useRetrofit && useRemoteDataSource
+    )
     val buildGradleProject = buildGradleProjectKt()
     val settingsGradle = settingsGradleKt(moduleData.namespace.substringAfterLast("."))
     if (buildGradleModulePath.exists()) {
@@ -126,7 +130,10 @@ fun RecipeExecutor.projectRecipe(
     save(settingsGradle, settingsGradlePath)
 
     val libsVersionsPath = moduleData.projectTemplateData.rootDir.resolve("gradle/libs.versions.toml")
-    val libsVersions = libsVersionsToml()
+    val libsVersions = libsVersionsToml(
+        useRoom && useLocalDataSource,
+        useRetrofit && useRemoteDataSource
+    )
     if (libsVersionsPath.exists()) {
         libsVersionsPath.delete()
     }
