@@ -20,6 +20,7 @@ import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.remoteD
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.repositoryKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.*
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.di.useCaseModuleKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.ui.mainActivityLayoutKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.ui.mainViewModelKt
 
 fun RecipeExecutor.projectRecipe(
@@ -34,10 +35,10 @@ fun RecipeExecutor.projectRecipe(
     val (projectData, srcOut) = moduleData
     val useAndroidX = projectData.androidXSupport
 
-    val activityClass = "MainActivity"
-    val layoutName = "activity_main"
+    // val activityClass = "MainActivity"
+    // val layoutName = "activity_main"
 
-    generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
+    // generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
 
     if (useDomainLayer) {
         createDirectory(moduleData.srcDir.resolve("domain"))
@@ -217,12 +218,15 @@ fun RecipeExecutor.projectRecipe(
         useRetrofit && useRemoteDataSource)
     save(mainViewModel, mainViewModelPath)
 
+    val mainActivityLayoutPath = moduleData.resDir.resolve("layout/activity_main.xml")
+    val mainActivityLayout = mainActivityLayoutKt()
+    save (mainActivityLayout, mainActivityLayoutPath)
+
     val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
     val mainActivity =
         emptyActivityKt(
             packageName,
             moduleData.namespace,
-            activityClass, layoutName,
             true,
             useAndroidX,
             useDomainLayer,

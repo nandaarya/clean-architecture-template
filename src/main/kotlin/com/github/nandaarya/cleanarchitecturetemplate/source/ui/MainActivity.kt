@@ -7,8 +7,6 @@ import com.android.tools.idea.wizard.template.renderIf
 fun emptyActivityKt(
     packageName: String,
     namespace: String,
-    activityClass: String,
-    layoutName: String,
     generateLayout: Boolean,
     useAndroidX: Boolean,
     useDomainLayer: Boolean,
@@ -27,11 +25,11 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ${escapeKotlinIdentifier(namespace)}.R
-${if (useRoom) "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel" else ""}
 ${if (useDomainLayer && useRoom) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" else ""}
+${if (!useDomainLayer && useRoom) "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel" else ""}
 
 @AndroidEntryPoint
-class $activityClass : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
     
@@ -40,7 +38,7 @@ class $activityClass : AppCompatActivity() {
         ${
     renderIf(generateLayout) {
         """enableEdgeToEdge()
-        setContentView(R.layout.$layoutName)
+        setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
