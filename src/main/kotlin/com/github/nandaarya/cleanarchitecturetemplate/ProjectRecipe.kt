@@ -46,28 +46,44 @@ fun RecipeExecutor.projectRecipe(
         createDirectory(moduleData.srcDir.resolve("domain/usecase"))
         createDirectory(moduleData.srcDir.resolve("domain/di"))
 
-        val myModelEntityPath = srcOut.resolve("domain/model/MyModelEntity.kt")
-        val myModelEntity = myModelEntityKt(packageName)
-        save(myModelEntity, myModelEntityPath)
+        if (useRoom && useLocalDataSource) {
+            val myModelEntityPath = srcOut.resolve("domain/model/MyModelEntity.kt")
+            val myModelEntity = myModelEntityKt(packageName)
+            save(myModelEntity, myModelEntityPath)
+        }
 
-        val exampleResponseEntityPath = srcOut.resolve("domain/model/ExampleResponseEntity.kt")
-        val exampleResponseEntity = exampleResponseEntityKt(packageName)
-        save(exampleResponseEntity, exampleResponseEntityPath)
+        if (useRetrofit && useRemoteDataSource) {
+            val exampleResponseEntityPath = srcOut.resolve("domain/model/ExampleResponseEntity.kt")
+            val exampleResponseEntity = exampleResponseEntityKt(packageName)
+            save(exampleResponseEntity, exampleResponseEntityPath)
+        }
 
         val useCaseModulePath = srcOut.resolve("domain/di/UseCaseModule.kt")
         val useCaseModule = useCaseModuleKt(packageName)
         save(useCaseModule, useCaseModulePath)
 
         val useCasePath = srcOut.resolve("domain/usecase/ExampleUseCase.kt")
-        val useCase = useCaseKt(packageName)
+        val useCase = useCaseKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+            )
         save(useCase, useCasePath)
 
         val useCaseInteractorPath = srcOut.resolve("domain/usecase/ExampleInteractor.kt")
-        val useCaseInteractor = useCaseInteractorKt(packageName)
+        val useCaseInteractor = useCaseInteractorKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
         save(useCaseInteractor, useCaseInteractorPath)
 
         val iRepositoryPath = srcOut.resolve("domain/repository/IExampleRepository.kt")
-        val iRepository = iRepositoryKt(packageName)
+        val iRepository = iRepositoryKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
         save(iRepository, iRepositoryPath)
 
         val repositoryModulePath = srcOut.resolve("data/di/RepositoryModule.kt")
