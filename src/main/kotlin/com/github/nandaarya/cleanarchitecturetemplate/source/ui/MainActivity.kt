@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ${escapeKotlinIdentifier(namespace)}.R
 ${if (useRoom) "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel" else ""}
-${if (useDomainLayer) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" else ""}
+${if (useDomainLayer && useRoom) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" else ""}
 
 @AndroidEntryPoint
 class $activityClass : AppCompatActivity() {

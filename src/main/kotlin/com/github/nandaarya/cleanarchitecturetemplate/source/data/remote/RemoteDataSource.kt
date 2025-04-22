@@ -4,31 +4,37 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun remoteDataSourceKt(
     packageName: String,
-    useDomainLayer: Boolean
+    useDomainLayer: Boolean,
+    useRetrofit: Boolean
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.data.remote
 
-import ${escapeKotlinIdentifier(packageName)}.data.remote.retrofit.ApiService
-${if (useDomainLayer) """
-    import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
-""".trimIndent() else """
-    import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse
-""".trimIndent()}
 import javax.inject.Inject
+${if (useDomainLayer && useRetrofit) """
+    import ${escapeKotlinIdentifier(packageName)}.data.remote.retrofit.ApiService
+    import ${escapeKotlinIdentifier(packageName)}.domain.model.ExampleResponseEntity
+""".trimIndent() 
+else if (!useDomainLayer && useRetrofit) """
+    import ${escapeKotlinIdentifier(packageName)}.data.remote.retrofit.ApiService
+    import ${escapeKotlinIdentifier(packageName)}.data.remote.response.ExampleResponse
+""".trimIndent() 
+else ""}
 
 class RemoteDataSource @Inject constructor(
-    private val apiService: ApiService
+    ${if (useRetrofit) "private val apiService: ApiService" else ""}
 ) {
-
-    suspend fun register(name: String, email: String, password: String): ${if (useDomainLayer) "ExampleResponseEntity" else "ExampleResponse"} {
+    
+    ${if (useRetrofit) 
+ """suspend fun register(name: String, email: String, password: String): ${if (useDomainLayer) "ExampleResponseEntity" else "ExampleResponse"} {
         ${if (useDomainLayer)
      """val response = apiService.register(name, email, password)
         return ExampleResponseEntity(
             error = response.error,
             message = response.message
-        )""" 
+        )"""
         else
      """return apiService.register(name, email, password)"""}
-    }
+    }   
+    """ else ""}
 }
 """.trimIndent()

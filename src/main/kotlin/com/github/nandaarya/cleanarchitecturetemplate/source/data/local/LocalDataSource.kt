@@ -4,24 +4,28 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 
 fun localDataSourceKt(
     packageName: String,
-    useDomainLayer: Boolean
+    useDomainLayer: Boolean,
+    useRoom: Boolean
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.data.local
 
-import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel
-import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModelDao
-${if (useDomainLayer) """
+import javax.inject.Inject
+${if (useDomainLayer && useRoom) """
+    import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel
+    import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModelDao
     import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity
-    import javax.inject.Inject
-""".trimIndent() else """
-    import javax.inject.Inject
-""".trimIndent()}
+""".trimIndent() 
+else if (!useDomainLayer && useRoom) """
+    import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel
+    import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModelDao
+""".trimIndent() else ""}
 
 class LocalDataSource @Inject constructor(
-    private val myModelDao: MyModelDao
+    ${if (useRoom) "private val myModelDao: MyModelDao" else ""}
 ) {
 
-    suspend fun insertMyModel(item: ${if (useDomainLayer) "MyModelEntity" else "MyModel"}) {
+    ${if (useRoom) 
+ """suspend fun insertMyModel(item: ${if (useDomainLayer) "MyModelEntity" else "MyModel"}) {
         ${if (useDomainLayer)
      """val myModel = MyModel(
             id = item.id
@@ -29,6 +33,7 @@ class LocalDataSource @Inject constructor(
         myModelDao.insertMyModel(myModel)"""
         else
      """myModelDao.insertMyModel(item)"""}
-    }
+    } 
+    """ else ""} 
 }
 """.trimIndent()

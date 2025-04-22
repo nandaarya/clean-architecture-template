@@ -43,14 +43,14 @@ class Repository @Inject constructor(
 }}
 )${if (useDomainLayer) ": IExampleRepository " else " "}{
 
-    ${if (useLocalDataSource) 
+    ${if (useRoom) 
  """${if (useDomainLayer) "override" else ""} 
     suspend fun insertMyModel(item: ${if (useDomainLayer) "MyModelEntity" else "MyModel"}) {
         localDataSource.insertMyModel(item)
     }
     """ else ""}
     
-    ${if (useRemoteDataSource) 
+    ${if (useRetrofit) 
  """${if (useDomainLayer) "override" else ""} 
     suspend fun register(name: String, email: String, password: String): ${if (useDomainLayer) "ExampleResponseEntity" else "ExampleResponse"} {
         return remoteDataSource.register(name, email, password)

@@ -141,49 +141,55 @@ fun RecipeExecutor.projectRecipe(
     save(myApplication, myApplicationPath)
 
     if (useLocalDataSource) {
-        createDirectory(moduleData.srcDir.resolve("data/local"))
-        createDirectory(moduleData.srcDir.resolve("data/local/room"))
-
-        val modelPath = srcOut.resolve("data/local/room/MyModel.kt")
-        val model = modelKt(packageName)
-        save(model, modelPath)
-
-        val daoPath = srcOut.resolve("data/local/room/Dao.kt")
-        val dao = daoKt(packageName)
-        save(dao, daoPath)
-
-        val databasePath = srcOut.resolve("data/local/room/Database.kt")
-        val database = databaseKt(packageName)
-        save(database, databasePath)
 
         val localDataSourcePath = srcOut.resolve("data/local/LocalDataSource.kt")
-        val localDataSource = localDataSourceKt(packageName, useDomainLayer)
+        val localDataSource = localDataSourceKt(packageName, useDomainLayer, useRoom)
         save(localDataSource, localDataSourcePath)
 
-        val roomModulePath = srcOut.resolve("data/di/RoomModule.kt")
-        val roomModule = roomModuleKt(packageName)
-        save(roomModule, roomModulePath)
+        if (useRoom) {
+            createDirectory(moduleData.srcDir.resolve("data/local"))
+            createDirectory(moduleData.srcDir.resolve("data/local/room"))
+
+            val modelPath = srcOut.resolve("data/local/room/MyModel.kt")
+            val model = modelKt(packageName)
+            save(model, modelPath)
+
+            val daoPath = srcOut.resolve("data/local/room/Dao.kt")
+            val dao = daoKt(packageName)
+            save(dao, daoPath)
+
+            val databasePath = srcOut.resolve("data/local/room/Database.kt")
+            val database = databaseKt(packageName)
+            save(database, databasePath)
+
+            val roomModulePath = srcOut.resolve("data/di/RoomModule.kt")
+            val roomModule = roomModuleKt(packageName)
+            save(roomModule, roomModulePath)
+        }
     }
 
     if (useRemoteDataSource) {
-        createDirectory(moduleData.srcDir.resolve("data/remote"))
-        createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
 
         val remoteDataSourcePath = srcOut.resolve("data/remote/RemoteDataSource.kt")
-        val remoteDataSource = remoteDataSourceKt(packageName, useDomainLayer)
+        val remoteDataSource = remoteDataSourceKt(packageName, useDomainLayer, useRetrofit)
         save(remoteDataSource, remoteDataSourcePath)
 
-        val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
-        val apiService = apiServiceKt(packageName)
-        save(apiService, apiServicePath)
+        if (useRetrofit) {
+            createDirectory(moduleData.srcDir.resolve("data/remote"))
+            createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
 
-        val exampleResponsePath = srcOut.resolve("data/remote/response/ExampleResponse.kt")
-        val exampleResponse = exampleResponseKt(packageName)
-        save(exampleResponse, exampleResponsePath)
+            val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
+            val apiService = apiServiceKt(packageName)
+            save(apiService, apiServicePath)
 
-        val retrofitModulePath = srcOut.resolve("data/di/RetrofitModule.kt")
-        val retrofitModule = retrofitModuleKt(packageName)
-        save(retrofitModule, retrofitModulePath)
+            val exampleResponsePath = srcOut.resolve("data/remote/response/ExampleResponse.kt")
+            val exampleResponse = exampleResponseKt(packageName)
+            save(exampleResponse, exampleResponsePath)
+
+            val retrofitModulePath = srcOut.resolve("data/di/RetrofitModule.kt")
+            val retrofitModule = retrofitModuleKt(packageName)
+            save(retrofitModule, retrofitModulePath)
+        }
     }
 
     val repositoryPath = srcOut.resolve("data/Repository.kt")
