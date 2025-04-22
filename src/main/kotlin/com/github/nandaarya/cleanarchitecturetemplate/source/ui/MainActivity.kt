@@ -11,7 +11,9 @@ fun emptyActivityKt(
     layoutName: String,
     generateLayout: Boolean,
     useAndroidX: Boolean,
-    useDomainLayer: Boolean
+    useDomainLayer: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
 ) = """
 package ${escapeKotlinIdentifier(packageName)}.ui
 
@@ -23,10 +25,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import ${escapeKotlinIdentifier(namespace)}.R
-${if (useDomainLayer) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" 
-else "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel"}
 import kotlinx.coroutines.launch
+import ${escapeKotlinIdentifier(namespace)}.R
+${if (useRoom) "import ${escapeKotlinIdentifier(packageName)}.data.local.room.MyModel" else ""}
+${if (useDomainLayer) "import ${escapeKotlinIdentifier(packageName)}.domain.model.MyModelEntity" else ""}
 
 @AndroidEntryPoint
 class $activityClass : AppCompatActivity() {
@@ -48,18 +50,20 @@ class $activityClass : AppCompatActivity() {
     }
 }
         
-        lifecycleScope.launch {
+        ${if (useRoom)
+     """lifecycleScope.launch {
             mainViewModel.${if (useDomainLayer) "myModelsEntity" else "myModels"}.collect { models ->
                 // You could update a UI component with this data
             }
         }
 
-        mainViewModel.insertMyModel(${if (useDomainLayer) "MyModelEntity(1)" else "MyModel(1)"})
-
-        lifecycleScope.launch {
+        mainViewModel.insertMyModel(${if (useDomainLayer) "MyModelEntity(1)" else "MyModel(1)"})""" else "".trimIndent()}
+        
+        ${if (useRetrofit)
+     """lifecycleScope.launch {
             val response = mainViewModel.register("John", "john@example.com", "password")
             // You could display a success or error message depending on the response
-        }
+        }""" else "".trimIndent()}
     }
 }
 """.trimIndent()

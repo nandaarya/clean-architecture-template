@@ -83,8 +83,6 @@ fun RecipeExecutor.projectRecipe(
     createDirectory(moduleData.srcDir.resolve("data"))
 
     createDirectory(moduleData.srcDir.resolve("data/di"))
-    createDirectory(moduleData.srcDir.resolve("data/remote"))
-    createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
     createDirectory(moduleData.srcDir.resolve("ui"))
 
     // Override Configuration
@@ -126,10 +124,6 @@ fun RecipeExecutor.projectRecipe(
     val myApplication = myApplicationKt(packageName)
     save(myApplication, myApplicationPath)
 
-    val retrofitModulePath = srcOut.resolve("data/di/RetrofitModule.kt")
-    val retrofitModule = retrofitModuleKt(packageName)
-    save(retrofitModule, retrofitModulePath)
-
     if (useLocalDataSource) {
         createDirectory(moduleData.srcDir.resolve("data/local"))
         createDirectory(moduleData.srcDir.resolve("data/local/room"))
@@ -155,9 +149,26 @@ fun RecipeExecutor.projectRecipe(
         save(roomModule, roomModulePath)
     }
 
-    val remoteDataSourcePath = srcOut.resolve("data/remote/RemoteDataSource.kt")
-    val remoteDataSource = remoteDataSourceKt(packageName, useDomainLayer)
-    save(remoteDataSource, remoteDataSourcePath)
+    if (useRemoteDataSource) {
+        createDirectory(moduleData.srcDir.resolve("data/remote"))
+        createDirectory(moduleData.srcDir.resolve("data/remote/retrofit"))
+
+        val remoteDataSourcePath = srcOut.resolve("data/remote/RemoteDataSource.kt")
+        val remoteDataSource = remoteDataSourceKt(packageName, useDomainLayer)
+        save(remoteDataSource, remoteDataSourcePath)
+
+        val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
+        val apiService = apiServiceKt(packageName)
+        save(apiService, apiServicePath)
+
+        val exampleResponsePath = srcOut.resolve("data/remote/response/ExampleResponse.kt")
+        val exampleResponse = exampleResponseKt(packageName)
+        save(exampleResponse, exampleResponsePath)
+
+        val retrofitModulePath = srcOut.resolve("data/di/RetrofitModule.kt")
+        val retrofitModule = retrofitModuleKt(packageName)
+        save(retrofitModule, retrofitModulePath)
+    }
 
     val repositoryPath = srcOut.resolve("data/Repository.kt")
     val repository = repositoryKt(
@@ -169,21 +180,25 @@ fun RecipeExecutor.projectRecipe(
         useRetrofit && useRemoteDataSource)
     save(repository, repositoryPath)
 
-    val apiServicePath = srcOut.resolve("data/remote/retrofit/ApiService.kt")
-    val apiService = apiServiceKt(packageName)
-    save(apiService, apiServicePath)
-
-    val exampleResponsePath = srcOut.resolve("data/remote/response/ExampleResponse.kt")
-    val exampleResponse = exampleResponseKt(packageName)
-    save(exampleResponse, exampleResponsePath)
-
     val mainViewModelPath = srcOut.resolve("ui/MainViewModel.kt")
-    val mainViewModel = mainViewModelKt(packageName, useDomainLayer)
+    val mainViewModel = mainViewModelKt(
+        packageName,
+        useDomainLayer,
+        useRoom && useLocalDataSource,
+        useRetrofit && useRemoteDataSource)
     save(mainViewModel, mainViewModelPath)
 
     val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
     val mainActivity =
-        emptyActivityKt(packageName, moduleData.namespace, activityClass, layoutName, true, useAndroidX, useDomainLayer)
+        emptyActivityKt(
+            packageName,
+            moduleData.namespace,
+            activityClass, layoutName,
+            true,
+            useAndroidX,
+            useDomainLayer,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource)
     save(mainActivity, mainActivityPath)
     open(mainActivityPath)
 }
