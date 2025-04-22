@@ -3,7 +3,6 @@ package com.github.nandaarya.cleanarchitecturetemplate
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import com.android.tools.idea.wizard.template.impl.activities.common.generateSimpleLayout
 import com.github.nandaarya.cleanarchitecturetemplate.source.configuration.*
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.repositoryModuleKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.di.retrofitModuleKt
@@ -32,77 +31,56 @@ fun RecipeExecutor.projectRecipe(
     useRoom: Boolean,
     useRetrofit: Boolean
 ) {
-    val (projectData, srcOut) = moduleData
-    val useAndroidX = projectData.androidXSupport
+    generateConfigurationFiles(
+        moduleData = moduleData,
+        packageName = packageName,
+        useLocalDataSource = useLocalDataSource,
+        useRemoteDataSource = useRemoteDataSource,
+        useRoom = useRoom,
+        useRetrofit = useRetrofit
+    )
 
-    // val activityClass = "MainActivity"
-    // val layoutName = "activity_main"
+    generateDomainLayerFiles(
+        moduleData = moduleData,
+        packageName = packageName,
+        useDomainLayer = useDomainLayer,
+        useLocalDataSource = useLocalDataSource,
+        useRemoteDataSource = useRemoteDataSource,
+        useRoom = useRoom,
+        useRetrofit = useRetrofit
+    )
 
-    // generateSimpleLayout(moduleData, "ui.$activityClass", layoutName, containerId = "main")
+    generateDataLayerFiles(
+        moduleData = moduleData,
+        packageName = packageName,
+        useDomainLayer = useDomainLayer,
+        useLocalDataSource = useLocalDataSource,
+        useRemoteDataSource = useRemoteDataSource,
+        useRoom = useRoom,
+        useRetrofit = useRetrofit
+    )
 
-    if (useDomainLayer) {
-        createDirectory(moduleData.srcDir.resolve("domain"))
-        createDirectory(moduleData.srcDir.resolve("domain/model"))
-        createDirectory(moduleData.srcDir.resolve("domain/repository"))
-        createDirectory(moduleData.srcDir.resolve("domain/usecase"))
-        createDirectory(moduleData.srcDir.resolve("domain/di"))
+    generatePresentationLayerFiles(
+        moduleData = moduleData,
+        packageName = packageName,
+        useDomainLayer = useDomainLayer,
+        useLocalDataSource = useLocalDataSource,
+        useRemoteDataSource = useRemoteDataSource,
+        useRoom = useRoom,
+        useRetrofit = useRetrofit
+    )
+}
 
-        if (useRoom && useLocalDataSource) {
-            val myModelEntityPath = srcOut.resolve("domain/model/MyModelEntity.kt")
-            val myModelEntity = myModelEntityKt(packageName)
-            save(myModelEntity, myModelEntityPath)
-        }
+fun RecipeExecutor.generateConfigurationFiles(
+    moduleData: ModuleTemplateData,
+    packageName: PackageName,
+    useLocalDataSource: Boolean,
+    useRemoteDataSource: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
+) {
+    val srcOut = moduleData.srcDir
 
-        if (useRetrofit && useRemoteDataSource) {
-            val exampleResponseEntityPath = srcOut.resolve("domain/model/ExampleResponseEntity.kt")
-            val exampleResponseEntity = exampleResponseEntityKt(packageName)
-            save(exampleResponseEntity, exampleResponseEntityPath)
-        }
-
-        val useCaseModulePath = srcOut.resolve("domain/di/UseCaseModule.kt")
-        val useCaseModule = useCaseModuleKt(packageName)
-        save(useCaseModule, useCaseModulePath)
-
-        val useCasePath = srcOut.resolve("domain/usecase/ExampleUseCase.kt")
-        val useCase = useCaseKt(
-            packageName,
-            useRoom && useLocalDataSource,
-            useRetrofit && useRemoteDataSource
-            )
-        save(useCase, useCasePath)
-
-        val useCaseInteractorPath = srcOut.resolve("domain/usecase/ExampleInteractor.kt")
-        val useCaseInteractor = useCaseInteractorKt(
-            packageName,
-            useRoom && useLocalDataSource,
-            useRetrofit && useRemoteDataSource
-        )
-        save(useCaseInteractor, useCaseInteractorPath)
-
-        val iRepositoryPath = srcOut.resolve("domain/repository/IExampleRepository.kt")
-        val iRepository = iRepositoryKt(
-            packageName,
-            useRoom && useLocalDataSource,
-            useRetrofit && useRemoteDataSource
-        )
-        save(iRepository, iRepositoryPath)
-
-        val repositoryModulePath = srcOut.resolve("data/di/RepositoryModule.kt")
-        val repositoryModule = repositoryModuleKt(
-            packageName,
-            useRoom && useLocalDataSource,
-            useRetrofit && useRemoteDataSource
-        )
-        save(repositoryModule, repositoryModulePath)
-    }
-
-    createDirectory(moduleData.srcDir.resolve("ui"))
-    createDirectory(moduleData.srcDir.resolve("data"))
-
-    createDirectory(moduleData.srcDir.resolve("data/di"))
-    createDirectory(moduleData.srcDir.resolve("ui"))
-
-    // Override Configuration
     val buildGradleModulePath = moduleData.rootDir.resolve("build.gradle.kts")
     val buildGradleModuleGroovyPath = moduleData.rootDir.resolve("build.gradle")
     val buildGradleProjectPath = moduleData.projectTemplateData.rootDir.resolve("build.gradle.kts")
@@ -147,6 +125,89 @@ fun RecipeExecutor.projectRecipe(
     val myApplicationPath = srcOut.resolve("MyApplication.kt")
     val myApplication = myApplicationKt(packageName)
     save(myApplication, myApplicationPath)
+}
+
+fun RecipeExecutor.generateDomainLayerFiles(
+    moduleData: ModuleTemplateData,
+    packageName: PackageName,
+    useDomainLayer: Boolean,
+    useLocalDataSource: Boolean,
+    useRemoteDataSource: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
+) {
+    val srcOut = moduleData.srcDir
+
+    if (useDomainLayer) {
+        createDirectory(moduleData.srcDir.resolve("domain"))
+        createDirectory(moduleData.srcDir.resolve("domain/model"))
+        createDirectory(moduleData.srcDir.resolve("domain/repository"))
+        createDirectory(moduleData.srcDir.resolve("domain/usecase"))
+        createDirectory(moduleData.srcDir.resolve("domain/di"))
+
+        if (useRoom && useLocalDataSource) {
+            val myModelEntityPath = srcOut.resolve("domain/model/MyModelEntity.kt")
+            val myModelEntity = myModelEntityKt(packageName)
+            save(myModelEntity, myModelEntityPath)
+        }
+
+        if (useRetrofit && useRemoteDataSource) {
+            val exampleResponseEntityPath = srcOut.resolve("domain/model/ExampleResponseEntity.kt")
+            val exampleResponseEntity = exampleResponseEntityKt(packageName)
+            save(exampleResponseEntity, exampleResponseEntityPath)
+        }
+
+        val useCaseModulePath = srcOut.resolve("domain/di/UseCaseModule.kt")
+        val useCaseModule = useCaseModuleKt(packageName)
+        save(useCaseModule, useCaseModulePath)
+
+        val useCasePath = srcOut.resolve("domain/usecase/ExampleUseCase.kt")
+        val useCase = useCaseKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
+        save(useCase, useCasePath)
+
+        val useCaseInteractorPath = srcOut.resolve("domain/usecase/ExampleInteractor.kt")
+        val useCaseInteractor = useCaseInteractorKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
+        save(useCaseInteractor, useCaseInteractorPath)
+
+        val iRepositoryPath = srcOut.resolve("domain/repository/IExampleRepository.kt")
+        val iRepository = iRepositoryKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
+        save(iRepository, iRepositoryPath)
+
+        val repositoryModulePath = srcOut.resolve("data/di/RepositoryModule.kt")
+        val repositoryModule = repositoryModuleKt(
+            packageName,
+            useRoom && useLocalDataSource,
+            useRetrofit && useRemoteDataSource
+        )
+        save(repositoryModule, repositoryModulePath)
+    }
+}
+
+fun RecipeExecutor.generateDataLayerFiles(
+    moduleData: ModuleTemplateData,
+    packageName: PackageName,
+    useDomainLayer: Boolean,
+    useLocalDataSource: Boolean,
+    useRemoteDataSource: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
+) {
+    val srcOut = moduleData.srcDir
+
+    createDirectory(moduleData.srcDir.resolve("data"))
+    createDirectory(moduleData.srcDir.resolve("data/di"))
 
     if (useLocalDataSource) {
 
@@ -209,6 +270,21 @@ fun RecipeExecutor.projectRecipe(
         useRoom && useLocalDataSource,
         useRetrofit && useRemoteDataSource)
     save(repository, repositoryPath)
+}
+
+fun RecipeExecutor.generatePresentationLayerFiles(
+    moduleData: ModuleTemplateData,
+    packageName: PackageName,
+    useDomainLayer: Boolean,
+    useLocalDataSource: Boolean,
+    useRemoteDataSource: Boolean,
+    useRoom: Boolean,
+    useRetrofit: Boolean
+) {
+    val srcOut = moduleData.srcDir
+    val useAndroidX = moduleData.projectTemplateData.androidXSupport
+
+    createDirectory(moduleData.srcDir.resolve("ui"))
 
     val mainViewModelPath = srcOut.resolve("ui/MainViewModel.kt")
     val mainViewModel = mainViewModelKt(
