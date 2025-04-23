@@ -19,6 +19,7 @@ import com.github.nandaarya.cleanarchitecturetemplate.source.data.remote.remoteD
 import com.github.nandaarya.cleanarchitecturetemplate.source.data.repositoryKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.*
 import com.github.nandaarya.cleanarchitecturetemplate.source.domain.di.useCaseModuleKt
+import com.github.nandaarya.cleanarchitecturetemplate.source.readmeKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.ui.mainActivityLayoutKt
 import com.github.nandaarya.cleanarchitecturetemplate.source.ui.mainViewModelKt
 
@@ -69,6 +70,11 @@ fun RecipeExecutor.projectRecipe(
         useRoom = useRoom,
         useRetrofit = useRetrofit
     )
+
+    val readmePath = moduleData.srcDir.resolve("README.md")
+    val readme = readmeKt()
+    save(readme, readmePath)
+    open(readmePath)
 }
 
 fun RecipeExecutor.generateConfigurationFiles(
@@ -309,5 +315,4 @@ fun RecipeExecutor.generatePresentationLayerFiles(
             useRoom && useLocalDataSource,
             useRetrofit && useRemoteDataSource)
     save(mainActivity, mainActivityPath)
-    open(mainActivityPath)
 }
