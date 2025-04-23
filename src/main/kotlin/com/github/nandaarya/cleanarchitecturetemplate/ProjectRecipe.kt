@@ -71,10 +71,7 @@ fun RecipeExecutor.projectRecipe(
         useRetrofit = useRetrofit
     )
 
-    val readmePath = moduleData.srcDir.resolve("README.md")
-    val readme = readmeKt()
-    save(readme, readmePath)
-    open(readmePath)
+    generateReadmeFile(moduleData)
 }
 
 fun RecipeExecutor.generateConfigurationFiles(
@@ -99,7 +96,7 @@ fun RecipeExecutor.generateConfigurationFiles(
         useRetrofit && useRemoteDataSource
     )
     val buildGradleProject = buildGradleProjectKt()
-    val settingsGradle = settingsGradleKt(moduleData.namespace.substringAfterLast("."))
+    val settingsGradle = settingsGradleKt(packageName.substringAfterLast("."))
     if (buildGradleModulePath.exists()) {
         buildGradleModulePath.delete()
         buildGradleProjectPath.delete()
@@ -274,7 +271,8 @@ fun RecipeExecutor.generateDataLayerFiles(
         useLocalDataSource,
         useRemoteDataSource,
         useRoom && useLocalDataSource,
-        useRetrofit && useRemoteDataSource)
+        useRetrofit && useRemoteDataSource
+    )
     save(repository, repositoryPath)
 }
 
@@ -297,22 +295,30 @@ fun RecipeExecutor.generatePresentationLayerFiles(
         packageName,
         useDomainLayer,
         useRoom && useLocalDataSource,
-        useRetrofit && useRemoteDataSource)
+        useRetrofit && useRemoteDataSource
+    )
     save(mainViewModel, mainViewModelPath)
 
     val mainActivityLayoutPath = moduleData.resDir.resolve("layout/activity_main.xml")
     val mainActivityLayout = mainActivityLayoutKt()
-    save (mainActivityLayout, mainActivityLayoutPath)
+    save(mainActivityLayout, mainActivityLayoutPath)
 
     val mainActivityPath = srcOut.resolve("ui/MainActivity.kt")
     val mainActivity =
         emptyActivityKt(
             packageName,
-            moduleData.namespace,
             true,
             useAndroidX,
             useDomainLayer,
             useRoom && useLocalDataSource,
-            useRetrofit && useRemoteDataSource)
+            useRetrofit && useRemoteDataSource
+        )
     save(mainActivity, mainActivityPath)
+}
+
+fun RecipeExecutor.generateReadmeFile(moduleData: ModuleTemplateData) {
+    val readmePath = moduleData.srcDir.resolve("README.md")
+    val readme = readmeKt()
+    save(readme, readmePath)
+    open(readmePath)
 }
