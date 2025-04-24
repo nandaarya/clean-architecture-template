@@ -145,6 +145,10 @@ tasks {
         useJUnitPlatform()
     }
 
+    buildSearchableOptions {
+        enabled = false
+    }
+
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
