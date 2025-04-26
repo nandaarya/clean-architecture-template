@@ -5,7 +5,7 @@ fun libsVersionsToml(
     useRetrofit: Boolean
 ) = """
 [versions]
-agp = "8.8.2"
+agp = "8.6.1"
 kotlin = "2.1.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
